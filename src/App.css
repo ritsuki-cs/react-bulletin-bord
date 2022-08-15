@@ -1,13 +1,101 @@
+/* 掲示板全般 */
 .App {
   text-align: center;
 }
 
-.App-header {
+.Header {
   background-color: #282c34;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  height: 80px;
+  padding: 0 50px;
+}
+
+.header-link {
+  margin-left: auto;
+  font-size: small;
+}
+.header-link a {
+  color: white;
+}
+
+.title {
+  font-size: 25px;
+  align-self: flex-start;
+  padding: 0 10px;
+}
+
+/* スレッド一覧画面 */
+.Thread {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px auto;
+  width: 50%;
+}
+
+.thread-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  width: 100%;
+  margin: 15px;
+}
+.thread-list tr {
+  border: solid 0.5px;
+  border-radius: 5px;
+  height: 50px;
+  font-size: 20px;
+  padding: 0 5px;
+}
+
+/* スレッド作成画面 */
+.NewThread {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px auto;
+  width: 50%;
+  flex-wrap: wrap;
+}
+
+.form-thread {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-thread div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  column-gap: 50%;
+}
+
+.form-thread div > * {
+  width: 50%;
+  height: 40px;
+}
+
+.input-thread {
+  height: 50px;
+  margin: 50px 0;
+  width: 100%;
+}
+
+.button-thread {
+  background-color: #282c34;
+  color: white;
+  border-radius: 5px;
+  font-size: 20px;
 }

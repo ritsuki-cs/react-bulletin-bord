@@ -1,16 +1,25 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
+import { Header } from './header';
+import { NewThread } from './newThread';
+import { Thread } from './thread';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        Hello
-      </header>
-      <body>
-        This is body place.
-      </body>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Header />
+        <body>
+          <Routes>
+            <Route path='/' element={<Thread />} />
+            <Route path='thread'>
+              <Route path='new' element={<NewThread />} />
+            </Route>
+          </Routes>
+        </body>
+      </div>
+    </BrowserRouter>
   );
 }
 
