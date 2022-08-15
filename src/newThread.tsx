@@ -8,8 +8,7 @@ type Inputs = {
 
 export function NewThread() {
   const instance = axios.create({
-    baseURL:
-      'https://virtserver.swaggerhub.com/INFO_3/BulletinBoardApplication/1.0.0',
+    baseURL: 'https://railway-react-bulletin-board.herokuapp.com',
   })
   const { register, handleSubmit} = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = data => {
