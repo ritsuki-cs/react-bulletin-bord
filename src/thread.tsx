@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 interface Post {
@@ -107,7 +107,7 @@ export function Thread() {
       <div className="Thread">
         <div className="title">{thread.title}</div>
         <div className="contents">
-          <div className='post-list'>
+          <div className="post-list">
             <table>
               {posts.map((data: Post) => (
                 <tr>
@@ -125,8 +125,17 @@ export function Thread() {
           </div>
           <div className="new-post">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <textarea placeholder="投稿しよう！" {...register('post')} className="new-post-input" />
-              <input type="submit" value="投稿" className="new-post-button" />
+              <textarea
+                placeholder="投稿しよう！"
+                {...register('post')}
+                className="new-post-input"
+              />
+              <div className='new-post-links'>
+                <Link to="/" className="link-top">
+                  Topに戻る
+                </Link>
+                <input type="submit" value="投稿" className="new-post-button" />
+              </div>
             </form>
           </div>
         </div>
