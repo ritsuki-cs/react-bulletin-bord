@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios'
-import { Link, useParams } from 'react-router-dom';
-import { off } from 'process';
+import { Link } from 'react-router-dom';
 
 interface Data {
-  "id": string,
-  "title": string
+  id: string,
+  title: string
 }
 
 let offset = 0
@@ -78,7 +77,7 @@ export function Threads() {
           <tr>
             <td>{data.id}</td>
             <td>
-              <Link to={'/thread/' + data.id} className="thread-link">{data.title}</Link>
+              <Link to={'/thread/' + data.id} className="thread-link" >{data.title}</Link>
             </td>
           </tr>
         ))}
