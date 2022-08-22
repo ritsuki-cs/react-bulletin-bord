@@ -33,6 +33,13 @@
   padding: 0 10px;
 }
 
+.title-loading {
+  font-size: 25px;
+  align-self: flex-start;
+  padding: 0 10px;
+  margin: 100px;
+}
+
 /* スレッド一覧画面 */
 .Threads {
   display: flex;

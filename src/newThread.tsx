@@ -1,27 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
-
-type Inputs = {
-  title: string
-};
+import { usePostThread } from './api';
 
 export function NewThread() {
-  const instance = axios.create({
-    baseURL: 'https://railway-react-bulletin-board.herokuapp.com',
-  })
-  const { register, handleSubmit} = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    instance.post('/threads', {
-      title: data.title
-    })
-      .then(function (res) {
-        console.log(res);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-  };
+  const [register, handleSubmit, onSubmit] = usePostThread();
 
   return (
     <div className="NewThread">
