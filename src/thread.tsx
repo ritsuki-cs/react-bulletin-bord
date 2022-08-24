@@ -8,7 +8,8 @@ export function Thread() {
 
   if (!thread) {
     return (
-        <div className="title-loading">Now Loading ...</div>
+      // ローディング画面
+      <div className="title-loading">Now Loading ...</div>
     )
   }
 

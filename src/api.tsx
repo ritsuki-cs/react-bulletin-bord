@@ -3,6 +3,7 @@ import { useState, useEffect, MouseEventHandler } from 'react'
 import { useSearchParams, useParams } from 'react-router-dom'
 import { useForm, SubmitHandler, UseFormRegister, UseFormHandleSubmit } from 'react-hook-form'
 
+// ----------------- 型定義(ここから)------------------
 // スレッドについての型定義
 interface threadsData {
   id: string
@@ -11,7 +12,6 @@ interface threadsData {
 interface threadTitle {
   title: string
 }
-
 // 投稿についての型定義
 interface threadData {
   threadId: string
@@ -25,11 +25,15 @@ interface postData {
 interface postInput {
   post: string
 }
+// ----------------- 型定義(ここまで) ------------------
 
+
+// ----------------- API実装(ここから)-------------------
 const instance = axios.create({
   baseURL: 'https://railway-react-bulletin-board.herokuapp.com',
 })
 
+// スレッドについてのGetリクエスト
 export function useGetThread(): [threadsData[] | undefined, MouseEventHandler, MouseEventHandler] {
   const [searchParams, setSearchParams] = useSearchParams()
   const offset = Number(searchParams.get('offset') ?? 0)
@@ -61,6 +65,7 @@ export function useGetThread(): [threadsData[] | undefined, MouseEventHandler, M
   return [threads, beforeList, nextList]
 }
 
+// スレッドについてのPostリクエスト
 export function usePostThread(): [
   UseFormRegister<threadTitle>,
   UseFormHandleSubmit<threadTitle>,
@@ -83,6 +88,7 @@ export function usePostThread(): [
   return [register, handleSubmit, onSubmit]
 }
 
+// 投稿についてのGetリクエスト
 export function useGetPost(): [
   threadData | undefined,
   MouseEventHandler,
@@ -121,6 +127,7 @@ export function useGetPost(): [
   return [thread, beforeList, nextList]
 }
 
+// 投稿についてのPostリクエスト
 export function usePostPost(): [
   UseFormRegister<postInput>,
   UseFormHandleSubmit<postInput>,
@@ -142,3 +149,4 @@ export function usePostPost(): [
   }
   return [register, handleSubmit, onSubmit]
 }
+// ----------------- API実装(ここまで))-------------------
