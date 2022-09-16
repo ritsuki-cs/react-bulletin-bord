@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useState, useEffect, MouseEventHandler, useCallback } from 'react'
 import { useSearchParams, useParams } from 'react-router-dom'
-import { useForm, SubmitHandler, UseFormRegister, UseFormHandleSubmit } from 'react-hook-form'
+import { useForm, SubmitHandler, UseFormRegister, UseFormHandleSubmit, FieldErrorsImpl } from 'react-hook-form'
 
 // ----------------- 型定義(ここから)------------------
 // スレッドについての型定義
@@ -67,11 +67,16 @@ export const useGetThread = (): { threads: threadsData[] | undefined, beforeList
 
 // スレッドについてのPostリクエスト
 export const usePostThread = (): {
-  register: UseFormRegister<threadTitle>,
-  handleSubmit: UseFormHandleSubmit<threadTitle>,
-  onSubmit: SubmitHandler<threadTitle>,
+  register: UseFormRegister<threadTitle>
+  handleSubmit: UseFormHandleSubmit<threadTitle>
+  onSubmit: SubmitHandler<threadTitle>
+  errors: FieldErrorsImpl<{title: string}>
 } => {
-  const { register, handleSubmit } = useForm<threadTitle>()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<threadTitle>()
   const onSubmit: SubmitHandler<threadTitle> = data => {
     instance
       .post('/threads', {
@@ -85,7 +90,12 @@ export const usePostThread = (): {
       })
   }
 
-  return { register: register, handleSubmit: handleSubmit, onSubmit: onSubmit }
+  return {
+    register: register,
+    handleSubmit: handleSubmit,
+    onSubmit: onSubmit,
+    errors: errors,
+  }
 }
 
 // 投稿についてのGetリクエスト
@@ -125,17 +135,22 @@ export const useGetPost = (): {
   const nextList = useCallback(() => {
     setSearchParams({ offset: String(offset + 10) })
   }, [offset, setSearchParams])
-  
+
   return { thread: thread, beforeList: beforeList, nextList: nextList }
 }
 
 // 投稿についてのPostリクエスト
 export const usePostPost = (): {
-  register: UseFormRegister<postInput>,
-  handleSubmit: UseFormHandleSubmit<postInput>,
+  register: UseFormRegister<postInput>
+  handleSubmit: UseFormHandleSubmit<postInput>
   onSubmit: SubmitHandler<postInput>
+  errors: FieldErrorsImpl<{post: string}>
 } => {
-  const { register, handleSubmit } = useForm<postInput>()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<postInput>()
   const threadId = useParams().thread_id
   const onSubmit: SubmitHandler<postInput> = data => {
     instance
@@ -149,6 +164,11 @@ export const usePostPost = (): {
         console.log(err)
       })
   }
-  return { register: register, handleSubmit: handleSubmit, onSubmit: onSubmit }
+  return {
+    register: register,
+    handleSubmit: handleSubmit,
+    onSubmit: onSubmit,
+    errors: errors,
+  }
 }
 // ----------------- API実装(ここまで))-------------------

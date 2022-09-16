@@ -3,7 +3,7 @@ import { useGetPost, usePostPost } from './api'
 
 export const Thread = () => {
   const { thread, beforeList, nextList } = useGetPost();
-  const { register, handleSubmit, onSubmit } = usePostPost();
+  const { register, handleSubmit, onSubmit, errors } = usePostPost();
 
 
   if (!thread) {
@@ -21,7 +21,7 @@ export const Thread = () => {
       <div className="contents">
         <div className="post-list">
           <table>
-            {posts.map((data) => (
+            {posts.map(data => (
               <tr>
                 <td className="td-id">{data.id}</td>
                 <td className="td-post">{data.post}</td>
@@ -39,10 +39,11 @@ export const Thread = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <textarea
               placeholder="投稿しよう！"
-              {...register('post')}
+              {...register('post', { required: true })}
               className="new-post-input"
             />
-            <div className='new-post-links'>
+            {errors.post && <div className='error-message'>※ 投稿内容を入力してください</div>}
+            <div className="new-post-links">
               <Link to="/" className="link-top">
                 Topに戻る
               </Link>

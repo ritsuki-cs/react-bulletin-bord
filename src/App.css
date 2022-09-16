@@ -104,7 +104,7 @@
 .form-thread div {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
   column-gap: 50%;
@@ -117,7 +117,7 @@
 
 .input-thread {
   height: 50px;
-  margin: 50px 0;
+  margin: 50px 0 0 0;
   width: 100%;
 }
 
@@ -126,6 +126,10 @@
   color: white;
   border-radius: 5px;
   font-size: 20px;
+}
+
+.btn-new-thread {
+  margin-top: 50px;
 }
 
 /* スレッド内の投稿一覧画面 */
@@ -211,4 +215,9 @@
   font-size: 20px;
   border-radius: 10px;
   margin-left: auto;
+}
+
+.error-message {
+  text-align: left;
+  justify-content: flex-start;
 }
