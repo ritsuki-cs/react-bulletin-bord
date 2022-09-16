@@ -3,7 +3,7 @@ import { useGetThread } from './api';
 
 
 export function Threads() {
-  const [threads, beforeList, nextList] = useGetThread()
+  const { threads, beforeList, nextList } = useGetThread()
 
   if (!threads) {
     return (

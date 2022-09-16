@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { usePostThread } from './api';
 
 export function NewThread() {
-  const [register, handleSubmit, onSubmit] = usePostThread();
+  const { register, handleSubmit, onSubmit } = usePostThread();
 
   return (
     <div className="NewThread">

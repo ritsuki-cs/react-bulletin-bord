@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState, useEffect, MouseEventHandler } from 'react'
+import { useState, useEffect, MouseEventHandler, useCallback } from 'react'
 import { useSearchParams, useParams } from 'react-router-dom'
 import { useForm, SubmitHandler, UseFormRegister, UseFormHandleSubmit } from 'react-hook-form'
 
@@ -34,7 +34,7 @@ const instance = axios.create({
 })
 
 // スレッドについてのGetリクエスト
-export function useGetThread(): [threadsData[] | undefined, MouseEventHandler, MouseEventHandler] {
+export const useGetThread = (): { threads: threadsData[] | undefined, beforeList: MouseEventHandler, nextList: MouseEventHandler} => {
   const [searchParams, setSearchParams] = useSearchParams()
   const offset = Number(searchParams.get('offset') ?? 0)
   const [threads, setThreads] = useState<threadsData[] | undefined>()
@@ -54,23 +54,23 @@ export function useGetThread(): [threadsData[] | undefined, MouseEventHandler, M
       })
   }, [offset])
 
-  const beforeList = () => {
+  const beforeList = useCallback(() => {
     setSearchParams({ offset: String(offset >= 10 ? offset - 10 : 0) })
-  }
+  }, [offset, setSearchParams])
 
-  const nextList = () => {
+  const nextList = useCallback(() => {
     setSearchParams({ offset: String(offset + 10) })
-  }
+  }, [offset, setSearchParams])
 
-  return [threads, beforeList, nextList]
+  return { threads: threads, beforeList: beforeList, nextList: nextList }
 }
 
 // スレッドについてのPostリクエスト
-export function usePostThread(): [
-  UseFormRegister<threadTitle>,
-  UseFormHandleSubmit<threadTitle>,
-  SubmitHandler<threadTitle>,
-] {
+export const usePostThread = (): {
+  register: UseFormRegister<threadTitle>,
+  handleSubmit: UseFormHandleSubmit<threadTitle>,
+  onSubmit: SubmitHandler<threadTitle>,
+} => {
   const { register, handleSubmit } = useForm<threadTitle>()
   const onSubmit: SubmitHandler<threadTitle> = data => {
     instance
@@ -85,15 +85,15 @@ export function usePostThread(): [
       })
   }
 
-  return [register, handleSubmit, onSubmit]
+  return { register: register, handleSubmit: handleSubmit, onSubmit: onSubmit }
 }
 
 // 投稿についてのGetリクエスト
-export function useGetPost(): [
-  threadData | undefined,
-  MouseEventHandler,
-  MouseEventHandler,
-] {
+export const useGetPost = (): {
+  thread: threadData | undefined,
+  beforeList: MouseEventHandler,
+  nextList: MouseEventHandler
+} => {
   const [searchParams, setSearchParams] = useSearchParams()
   const offset = Number(searchParams.get('offset') ?? 0)
   const threadId = useParams().thread_id
@@ -117,22 +117,24 @@ export function useGetPost(): [
       })
   }, [threadId, offset])
 
-  const beforeList = () => {
+  // usecallbackを使う
+  const beforeList = useCallback(() => {
     setSearchParams({ offset: String(offset >= 10 ? offset - 10 : 0) })
-  }
+  }, [offset, setSearchParams])
 
-  const nextList = () => {
+  const nextList = useCallback(() => {
     setSearchParams({ offset: String(offset + 10) })
-  }
-  return [thread, beforeList, nextList]
+  }, [offset, setSearchParams])
+  
+  return { thread: thread, beforeList: beforeList, nextList: nextList }
 }
 
 // 投稿についてのPostリクエスト
-export function usePostPost(): [
-  UseFormRegister<postInput>,
-  UseFormHandleSubmit<postInput>,
-  SubmitHandler<postInput>
-] {
+export const usePostPost = (): {
+  register: UseFormRegister<postInput>,
+  handleSubmit: UseFormHandleSubmit<postInput>,
+  onSubmit: SubmitHandler<postInput>
+} => {
   const { register, handleSubmit } = useForm<postInput>()
   const threadId = useParams().thread_id
   const onSubmit: SubmitHandler<postInput> = data => {
@@ -147,6 +149,6 @@ export function usePostPost(): [
         console.log(err)
       })
   }
-  return [register, handleSubmit, onSubmit]
+  return { register: register, handleSubmit: handleSubmit, onSubmit: onSubmit }
 }
 // ----------------- API実装(ここまで))-------------------

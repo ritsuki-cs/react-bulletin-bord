@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import { useGetPost, usePostPost } from './api'
 
-export function Thread() {
-  const [thread, beforeList, nextList] = useGetPost();
-  const [register, handleSubmit, onSubmit] = usePostPost();
+export const Thread = () => {
+  const { thread, beforeList, nextList } = useGetPost();
+  const { register, handleSubmit, onSubmit } = usePostPost();
 
 
   if (!thread) {
