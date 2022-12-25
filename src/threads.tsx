@@ -18,9 +18,8 @@ export function Threads() {
       <table className="thread-list">
         {threads.map((data) => (
           <tr>
-            <td>{data.id}</td>
             <td>
-              <Link to={'/thread/' + data.id} className="thread-link" >{data.title}</Link>
+              <Link to={'/thread/' + data.id} className="thread-link" state={data.title} >{data.title}</Link>
             </td>
           </tr>
         ))}

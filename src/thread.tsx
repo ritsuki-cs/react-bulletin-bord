@@ -1,10 +1,17 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom'
 import { useGetPost, usePostPost } from './api'
+
 
 export const Thread = () => {
   const { thread, beforeList, nextList } = useGetPost();
   const { register, handleSubmit, onSubmit, errors } = usePostPost();
+  const location = useLocation()
 
+  // 最適な方法が分からない
+  // 以前はGetリクエストでスレッドタイトルを取得できたが、APIの使用が変わって不便になった
+  // const title: string = location.state
+  const [title, setTitle] = useState(location.state)
 
   if (!thread) {
     return (
@@ -14,26 +21,32 @@ export const Thread = () => {
   }
 
   const posts = thread.posts;
+  const isEmpty: boolean = (posts == null)
 
   return (
     <div className="Thread">
-      <div className="title">{thread.title}</div>
+      <div className="title">{title}</div>
       <div className="contents">
         <div className="post-list">
-          <table>
-            {posts.map(data => (
-              <tr>
-                <td className="td-id">{data.id}</td>
-                <td className="td-post">{data.post}</td>
-              </tr>
-            ))}
-          </table>
-          <div className="buttons">
-            <button onClick={beforeList}>前の10件</button>
-            <button onClick={nextList} className="button-right">
-              次の10件
-            </button>
-          </div>
+          {!isEmpty &&
+            <>
+              <table>
+                {posts.map(data => (
+                  <tr>
+                    <td className="td-post">{data.post}</td>
+                  </tr>
+                ))}
+              </table>
+              <div className="buttons">
+                <button onClick={beforeList}>前の10件</button>
+                {posts.length === 10 &&
+                  <button onClick={nextList} className="button-right">
+                    次の10件
+                  </button>
+                }
+              </div>
+            </>
+          }
         </div>
         <div className="new-post">
           <form onSubmit={handleSubmit(onSubmit)}>

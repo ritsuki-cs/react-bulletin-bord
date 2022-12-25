@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState, useEffect, MouseEventHandler, useCallback } from 'react'
-import { useSearchParams, useParams } from 'react-router-dom'
+import { useSearchParams, useParams, useNavigate } from 'react-router-dom'
 import { useForm, SubmitHandler, UseFormRegister, UseFormHandleSubmit, FieldErrorsImpl } from 'react-hook-form'
 
 // ----------------- 型定義(ここから)------------------
@@ -30,7 +30,7 @@ interface postInput {
 
 // ----------------- API実装(ここから)-------------------
 const instance = axios.create({
-  baseURL: 'https://railway-react-bulletin-board.herokuapp.com',
+  baseURL: 'https://2y6i6tqn41.execute-api.ap-northeast-1.amazonaws.com',
 })
 
 // スレッドについてのGetリクエスト
@@ -72,6 +72,7 @@ export const usePostThread = (): {
   onSubmit: SubmitHandler<threadTitle>
   errors: FieldErrorsImpl<{title: string}>
 } => {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -84,6 +85,7 @@ export const usePostThread = (): {
       })
       .then(function (res) {
         console.log(res)
+        navigate(`/thread/${res.data.id}`, { state: data.title })
       })
       .catch(function (err) {
         console.log(err)
@@ -159,6 +161,7 @@ export const usePostPost = (): {
       })
       .then(function (res) {
         console.log(res)
+        window.location.reload()
       })
       .catch(function (err) {
         console.log(err)
