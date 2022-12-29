@@ -7,6 +7,8 @@ export const Thread = () => {
   const { thread, beforeList, nextList, getThread } = useGetPost();
   const { register, handleSubmit, onSubmit, errors } = usePostPost({onPost: () => {
     getThread()
+    let comment = document.getElementById('comment')! as HTMLInputElement
+    comment.value = ""
   }});
   const location = useLocation()
 
@@ -56,6 +58,7 @@ export const Thread = () => {
               placeholder="投稿しよう！"
               {...register('post', { required: true })}
               className="new-post-input"
+              id="comment"
             />
             {errors.post && <div className='error-message'>※ 投稿内容を入力してください</div>}
             <div className="new-post-links">
