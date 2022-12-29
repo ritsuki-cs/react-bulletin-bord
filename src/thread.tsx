@@ -4,12 +4,14 @@ import { useGetPost, usePostPost } from './api'
 
 
 export const Thread = () => {
-  const { thread, beforeList, nextList } = useGetPost();
-  const { register, handleSubmit, onSubmit, errors } = usePostPost();
+  const { thread, beforeList, nextList, getThread } = useGetPost();
+  const { register, handleSubmit, onSubmit, errors } = usePostPost({onPost: () => {
+    getThread()
+  }});
   const location = useLocation()
 
   // 最適な方法が分からない
-  // 以前はGetリクエストでスレッドタイトルを取得できたが、APIの使用が変わって不便になった
+  // 以前はGetリクエストでスレッドタイトルを取得できたが、APIの仕様が変わって不便になった
   // const title: string = location.state
   const [title, setTitle] = useState(location.state)
 

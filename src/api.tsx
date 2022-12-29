@@ -62,7 +62,7 @@ export const useGetThread = (): { threads: threadsData[] | undefined, beforeList
     setSearchParams({ offset: String(offset + 10) })
   }, [offset, setSearchParams])
 
-  return { threads: threads, beforeList: beforeList, nextList: nextList }
+  return { threads, beforeList, nextList }
 }
 
 // スレッドについてのPostリクエスト
@@ -92,19 +92,15 @@ export const usePostThread = (): {
       })
   }
 
-  return {
-    register: register,
-    handleSubmit: handleSubmit,
-    onSubmit: onSubmit,
-    errors: errors,
-  }
+  return { register, handleSubmit, onSubmit, errors }
 }
 
 // 投稿についてのGetリクエスト
 export const useGetPost = (): {
   thread: threadData | undefined,
   beforeList: MouseEventHandler,
-  nextList: MouseEventHandler
+  nextList: MouseEventHandler,
+  getThread: () => void
 } => {
   const [searchParams, setSearchParams] = useSearchParams()
   const offset = Number(searchParams.get('offset') ?? 0)
@@ -112,7 +108,7 @@ export const useGetPost = (): {
   const [thread, setThread] = useState<threadData>()
 
   // スレッド内の投稿一覧の取得
-  useEffect(() => {
+  const getThread = () => {
     instance
       .get(`/threads/${threadId}/posts`, {
         params: {
@@ -127,6 +123,10 @@ export const useGetPost = (): {
       .catch(err => {
         console.log(err)
       })
+  }
+
+  useEffect(() => {
+    getThread()
   }, [threadId, offset])
 
   // usecallbackを使う
@@ -138,11 +138,11 @@ export const useGetPost = (): {
     setSearchParams({ offset: String(offset + 10) })
   }, [offset, setSearchParams])
 
-  return { thread: thread, beforeList: beforeList, nextList: nextList }
+  return { thread, beforeList, nextList, getThread }
 }
 
 // 投稿についてのPostリクエスト
-export const usePostPost = (): {
+export const usePostPost = ({onPost}: {onPost:() => void}): {
   register: UseFormRegister<postInput>
   handleSubmit: UseFormHandleSubmit<postInput>
   onSubmit: SubmitHandler<postInput>
@@ -161,17 +161,12 @@ export const usePostPost = (): {
       })
       .then(function (res) {
         console.log(res)
-        window.location.reload()
+        onPost()
       })
       .catch(function (err) {
         console.log(err)
       })
   }
-  return {
-    register: register,
-    handleSubmit: handleSubmit,
-    onSubmit: onSubmit,
-    errors: errors,
-  }
+  return { register, handleSubmit, onSubmit, errors }
 }
 // ----------------- API実装(ここまで))-------------------
